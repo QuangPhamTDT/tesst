@@ -1,0 +1,104 @@
+
+:host {
+    display: block;
+}
+table{
+    border: 1px solid black;
+}
+
+.table-wrap {
+    padding: 0 40px;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    table{
+        margin-top: 50px;
+        tr{
+            th{
+                color: #1f7564;
+                height: 40px;
+                padding-left: 30px;
+            }
+            td{
+                color: #2BC3A5;
+                height: 40px;
+                padding-left: 30px;
+                button{
+                    color: red;
+                    padding: 3px 10px;
+                    border-color: red;
+                    border: 1px solid;
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
+            }
+            &:nth-child(odd) {
+                background-color: #cccccc;
+            }
+            &:nth-child(even) {
+                background-color: white;
+            }
+        }
+    }
+}
+
+
+.search-topnav input[type=text] {
+    padding: 6px;
+    margin-top: 8px;
+    margin-right: 0px;
+    font-size: 17px;
+    width: 700px;
+}
+
+.search-topnav button {
+    height: 36px;
+    background-color: #2E6EDE;
+    color: white;
+    padding: 10px 20px;
+    margin: 15px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.btn-add{
+    height: 36px;
+    background-color: #2E6EDE;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin:40px 32px;
+    float: right;
+}
+
+.search-topnav button:hover {
+    background-color: #154AA5;
+}
+.search-topnav{
+    float: right;
+    margin-right: 30px;
+}
+.pupup {
+    width: 100%;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    margin-top: 60px;
+    .inp-group {
+        width: 20%;
+        flex-direction: column;
+        display: flex;
+        align-items: center;
+        .inp {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding-bottom: 20px;
+        }
+    }
+    input {
+        padding-left: 20px;
+    }
+}
