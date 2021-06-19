@@ -1,53 +1,75 @@
 
-<div class="search-topnav">
-    <input type="text"  placeholder="Search by Poster.." [(ngModel)]="searchValue"/>
-    <button (click)="somethingChanged()">Search</button>
+<!-- <div class="search-topnav">
+    <input type="text"  placeholder="Search by Username.." />
+    <button>Search</button>
 
-</div>
+</div> -->
 
 <div class="table-wrap">
 
     <table>
-        <tr><td *ngFor="let header of headers">{{header}}</td></tr>
-        <tr *ngFor="let row of body; index as i">
-            <td>{{i + 1}}</td>
-            <td><button (click)="onDeleteItem(row, i)">Delete</button></td>
-            <td>{{row.time}}</td>
-            <td>{{row.reporter}}</td>
-            <td>{{row.poster}}</td>
-            <td>{{row.content}}</td>
-            <td><button (click)="openEditPopup(row, i)">edit</button></td>
+        <tr><td *ngFor="let header of headers"><b> {{header}}</b></td></tr>
+        <tr *ngFor="let item of items">
+            <td>{{item.userId}}</td>
+            <td><button (click) = "onDeleteItem(item.username)">Delete</button></td>
+            <td>{{item.username}}</td>
+            <td>{{item.firstname}}</td>
+            <td>{{item.lastname}}</td>
+            <td>{{item.email}}</td>
+            <td>{{item.password}}</td>
+            <td>{{item.phone}}</td>
+            <td>{{item.status}}</td>
+            <td><button (click)=openPopup(item)>Edit</button>
+            </td>
         </tr>
     </table>
 </div>
-<button class="btn-add" (click)="openAddPopup()">ADD</button>
+<button class="btn-add" (click)="popup = true">Create</button>
 
 <div *ngIf="popup" class="pupup">
+   
     <div class="inp-group">
-        <div class="inp"><label for="time">time</label><input [(ngModel)]="time" type="text" id="time"></div>
+        <div class="inp"><label for="id">id</label><input [(ngModel)]="cid" type="text" id="time"></div>
 
-        <div class="inp"><label for="reporter">reporter</label><input [(ngModel)]="reporter" type="text" id="reporter"></div>
+        <div class="inp"><label for="username">username</label><input [(ngModel)]="cusername" type="text" id="reporter"></div>
 
-        <div class="inp"><label for="poster">poster</label><input [(ngModel)]="poster"  type="text" id="poster"></div>
+        <div class="inp"><label for="firstName">firstName</label><input [(ngModel)]="cfirstName"  type="text" id="poster"></div>
 
-        <div class="inp"><label for="content">content</label><input [(ngModel)]="content"  type="text" id="content"></div>
-    </div>
+        <div class="inp"><label for="lastName">lastName</label><input [(ngModel)]="clastName"  type="text" id="content"></div>
 
-    <button style="width: fit-content;" (click)="addAnItem()"> add </button>
+        <div class="inp"><label for="email">email</label><input [(ngModel)]="cemail"  type="text" id="content"></div>
+
+        <div class="inp"><label for="password">password</label><input [(ngModel)]="cpassword"  type="text" id="content"></div>
+
+        <div class="inp"><label for="phone">phone</label><input [(ngModel)]="cphone"  type="text" id="content"></div>
+
+        <div class="inp"><label for="status">status</label><input [(ngModel)]="cstatus"  type="text" id="content"></div>
+   </div>
+   <div class="close-btn" (click)="popup = false"> X</div>
+   <div class="update-btn" (click)="onCreate()">Create</div>
+
 
 </div>
 
 <div *ngIf="update" class="pupup">
     <div class="inp-group">
-        <div class="inp"><label for="time">time</label><input [(ngModel)]="timeUpate" type="text" id="time"></div>
+        <div class="inp"><label for="id">id</label><input [(ngModel)]="id" type="text" id="time"></div>
 
-        <div class="inp"><label for="reporter">reporter</label><input [(ngModel)]="reporterUpate" type="text" id="reporter"></div>
+        <div class="inp"><label for="username">username</label><input [(ngModel)]="username" type="text" id="reporter"></div>
 
-        <div class="inp"><label for="poster">poster</label><input [(ngModel)]="posterUpate"  type="text" id="poster"></div>
+        <div class="inp"><label for="firstName">firstName</label><input [(ngModel)]="firstName"  type="text" id="poster"></div>
 
-        <div class="inp"><label for="content">content</label><input [(ngModel)]="contentUpate"  type="text" id="content"></div>
-    </div>
+        <div class="inp"><label for="lastName">lastName</label><input [(ngModel)]="lastName"  type="text" id="content"></div>
 
-    <button style="width: fit-content;" (click)="updateAnItem()"> update </button>
+        <div class="inp"><label for="email">email</label><input [(ngModel)]="email"  type="text" id="content"></div>
+
+        <div class="inp"><label for="password">password</label><input [(ngModel)]="password"  type="text" id="content"></div>
+
+        <div class="inp"><label for="phone">phone</label><input [(ngModel)]="phone"  type="text" id="content"></div>
+
+        <div class="inp"><label for="status">status</label><input [(ngModel)]="status"  type="text" id="content"></div>
+   </div>
+   <div class="update-btn" (click)="onUpdate()">Update</div>
+   <div class="close-btn" (click)="update = false"> X</div>
 
 </div>

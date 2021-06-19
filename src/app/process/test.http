@@ -1,0 +1,33 @@
+DELETE http://10.1.20.16:9999/api/users/hiep00033
+
+###
+
+POST http://10.1.20.16:9999/api/users/
+Content-Type: application/json
+
+{
+      "id": 0,
+  "username": "tester1 ",
+  "firstName": "viet nham api roi",
+  "lastName": "viet lai di",
+  "email": "aa@gmail.com",
+  "password": "aa",
+  "phone": "aa",
+  "status": "aa"
+}
+
+###
+
+PUT http://10.1.20.16:9999/api/users/danganhtai123
+Content-Type: application/json
+
+{
+    "id": 0,
+    "username": "TaiHeo",
+    "firstName": "aa1",
+    "lastName": "aa1",
+    "email": "aa",
+    "password": "aa",
+    "phone": "aa",
+    "status": "danh nhau k tai chef"
+}

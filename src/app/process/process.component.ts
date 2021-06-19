@@ -1,89 +1,154 @@
 import { Component, OnInit } from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import { Observable } from 'rxjs';
+interface User {
+  email: string
+  firstname: string
+  lastname: string
+  password: string
+  phone: string
+  status: string
+  userId: number | string
+  username: string
+}
 
 @Component({
   selector: 'app-process',
   templateUrl: './process.component.html',
   styleUrls: ['./process.component.scss']
 })
+
+
 export class ProcessComponent implements OnInit {
   popup = false;
   update = false;
-  headers: string[] = ['ID', 'Delete', 'Time', 'Reporter', 'Poster', 'Content', 'Action'];
-  body: any[] = [
-    { time: '20/10/2020 16:25', reporter: 'system', poster: 'Lê Trung Kiên', content: 'Lorem ipsum dolor sit amet,quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.' },
-    { time: '20/10/2020 15:21', reporter: 'system', poster: 'Hoàng Đình Trọng	', content: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...' },
-    { time: '20/10/2020 09:09', reporter: 'user', poster: 'Nguyễn Ngọc Đoài	', content: 'There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain...' },
-    { time: '20/10/2020 08:02', reporter: 'system', poster: 'Nguyễn Duy Hoàng', content: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.' },
-    { time: '20/10/2020 14:09', reporter: 'user', poster: 'Lê Thị Thúy Hiền', content: 'From its medieval origins to the digital era, learn everything there is to know about the ubiquitous lorem ipsum passage.' },
-    { time: '20/10/2020 09:35', reporter: 'system', poster: 'Nguyễn Đức Thành', content: 'The purpose of A practice not without controversy, laying out pages with meaningless filler text can be very useful when the focus is meant to be on design, not content.' },
+  items: User[] | undefined;
+  headers: string[] = ['User ID','Delete', 'Username', 'Firstname', 'Lastname', 'Email', 'Password', 'Phone','Status','Edit'];
 
-  ]
-  searchValue = '';
-  time = '';
-  reporter = '';
-  poster = '';
-  content = '';
-  searchValueUpate = '';
-  timeUpate = '';
-  reporterUpate = '';
-  posterUpate = '';
-  contentUpate = '';
+
+  id: string | number = '';
+  username = '';
+  firstName = '';
+  lastName = '';
+  email = '';
+  password = '';
+  phone = '';
+  status = '';
+
+  cid: string | number = '';
+  cusername = '';
+  cfirstName = '';
+  clastName = '';
+  cemail = '';
+  cpassword = '';
+  cphone = '';
+  cstatus = '';
+
+  nameUpdate = '';
+
   currentItemNeededUpdate: number| undefined;
-  constructor() { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
   ngOnInit(): void {
+    this.logdata();
   }
-  onDeleteItem(item: any, index: number): void {
-    console.log('xoa item nay: ', item, 'index: ', index);
-    this.body = this.body.filter((ele, id) => id !== index)
-  }
-  somethingChanged(): void {
-    
-    const filterResult = this.body.filter((ele, id) => {
-      ele.poster.toLowerCase().includes(this.searchValue.toLowerCase())
-    })
-    console.log(filterResult);
-    this.body = filterResult;
-    
-  }
-  openAddPopup(): void {
-    this.popup = !this.popup;
-  }
-  addAnItem(): void {
-    const item = {
-      time: this.time,
-      reporter: this.reporter,
-      poster: this.poster,
-      content: this.content, 
-    }
-    this.body.push(item)
-  }
-  openEditPopup(item: any, index: number) {
-    this.update = !this.update;
-      this.timeUpate = item.time;
-      this.reporterUpate = item.reporter;
-      this.posterUpate = item.poster;
-      this.contentUpate = item.content;
-      this.currentItemNeededUpdate = index
-    
-  }
-  updateAnItem() {
-    const item = {
-      time: this.timeUpate  ,
-      reporter: this.reporterUpate ,
-      poster: this.posterUpate ,
-      content: this.contentUpate , 
-    }
-   
 
-      if(this.currentItemNeededUpdate !== undefined) {
-        console.log(
-          item, this.currentItemNeededUpdate
-        );
-        this.body[this.currentItemNeededUpdate].time = this.timeUpate ;
-        this.body[this.currentItemNeededUpdate].reporter = this.reporterUpate ;
-        this.body[this.currentItemNeededUpdate].poster = this.posterUpate ;
-        this.body[this.currentItemNeededUpdate].content = this.contentUpate ;
-      }
+
+  logdata(): void {
+    this.getAll().subscribe(e => {
+      this.items = e;
+      console.log(e);
+    })
   }
+  getAll(): Observable<User[]> {
+    return this.http.get<User[]>('http://10.1.20.16:9999/api/users')
+  }
+
+
+  onDeleteItem(username:string): void {
+    if(this.items !== undefined){
+      this.items = this.items.filter((item) => (item.username !== username));
+      this.deleteAnItem(username).subscribe(e => {
+      console.log(e);
+    })
+    }
+  }
+  deleteAnItem(username:string):Observable<any> {
+    return this.http.delete(`http://10.1.20.16:9999/api/users/${username}`)
+  }
+
+
+  onCreate(): void {
+    const body = {
+      id: this.cid,
+      username: this.cusername,
+      firstname: this.cfirstName,
+      lastname: this.clastName,
+      email: this.cemail,
+      password: this.cpassword,
+      phone: this.cphone,
+      status: this.cstatus,
+    }
+    this.createAnItem(body).subscribe(e => {
+      console.log(e);
+      if(e){
+        this.popup = false;
+        this.logdata();
+      }
+    })
+  }
+  createAnItem(body:any):Observable<any>{
+    return this.http.post<any>(
+      'http://10.1.20.16:9999/api/users',
+      body, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+  }
+
+  openPopup(item: User): void {
+    console.log(item);
+    this.update = !this.update;
+    this.nameUpdate = item.username;
+    this.username = item.username    
+    this.firstName = item.firstname
+    this.lastName = item.lastname
+    this.email = item.email
+    this.password = item.password
+    this.phone = item.phone
+    this.status = item.status
+    this.id = item.userId
+  }
+
+  onUpdate(): void {
+    const body = {
+      id: this.id,
+      username: this.username,
+      firstname: this.firstName,
+      lastname: this.lastName,
+      email: this.email,
+      password: this.password,
+      phone: this.phone,
+      status: this.status,
+    }
+    this.updateAnItem(this.nameUpdate, body).subscribe(r => {
+      if(r) {
+        this.update = false;
+        this.logdata()
+      }
+    
+    }, er => {
+      console.log('update fail', er);
+      
+    })
+  }
+  updateAnItem(username: string, body: any): Observable<HttpResponse<any>> {
+    return this.http.put<HttpResponse<any>>(`http://10.1.20.16:9999/api/users/${username}`, body)
+  }
+
 }
+
